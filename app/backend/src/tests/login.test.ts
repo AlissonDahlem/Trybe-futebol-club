@@ -1,18 +1,20 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-// @ts-ignore
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
-
+import User from '../database/models/UserModel';
 import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('Login', () => {
+  describe('Should return status 200 and a JWT token', async () => {
+
+  })
+
   /**
    * Exemplo do uso de stubs com tipos
    */
