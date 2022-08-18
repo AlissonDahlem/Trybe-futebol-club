@@ -1,15 +1,19 @@
 import * as express from 'express';
+import LoginController from './controllers/loginController';
+import errorMiddleware from './middlewares/errorMiddleware';
 
 class App {
   public app: express.Express;
+  private _loginController = new LoginController();
 
   constructor() {
     this.app = express();
-
     this.config();
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.post('/login', this._loginController.login);
+    this.app.use(errorMiddleware);
   }
 
   private config():void {
@@ -19,7 +23,6 @@ class App {
       res.header('Access-Control-Allow-Headers', '*');
       next();
     };
-
     this.app.use(express.json());
     this.app.use(accessControl);
   }
