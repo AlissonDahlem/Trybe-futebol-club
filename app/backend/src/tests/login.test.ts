@@ -1,18 +1,41 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
+// @ts-ignore
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import User from '../database/models/UserModel';
 import { Response } from 'superagent';
+import { hash } from 'bcryptjs';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('Login', () => {
-  describe('Should return status 200 and a JWT token', async () => {
+  let chaiHttpResponse: Response;
+  const userLogin = {
+    email: 'teste@teste.com',
+    password: 'password'
+  }
+  describe('valida resposta ao efetuar login', () => {
+    beforeEach(() => {
+      (User.findOne as sinon.SinonStub).restore();
+    })
+    it('deve responder com um token caso o login seja efetuado com sucesso', async () => {
+      const passwordEncrypt = await hash('password', 8);
+      sinon.stub(User, 'findOne').resolves({
+        id: 1,
+        username: 'name',
+        role: 'role',
+        email: 'teste@teste.com',
+        password: passwordEncrypt
+      } as User);
 
+      chaiHttpResponse = await chai.request(app).post('/login').send(userLogin);
+
+      expect(chaiHttpResponse.body).to.have.key('token').and.not.to.be.an('undefined' || 'null')
+    })
   })
 
   /**
