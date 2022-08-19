@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import User from '../database/models/UserModel';
+import Users from '../database/models/UserModel';
 import { Response } from 'superagent';
 import { hash } from 'bcryptjs';
 
@@ -20,17 +20,17 @@ describe('/login', () => {
   }
   describe('valida resposta ao efetuar login', () => {
     after(() => {
-      (User.findOne as sinon.SinonStub).restore();
+      (Users.findOne as sinon.SinonStub).restore();
     })
     it('deve responder com um token caso o login seja efetuado com sucesso', async () => {
       const passwordEncrypt = await hash('password', 8);
-      sinon.stub(User, 'findOne').resolves({
+      sinon.stub(Users, 'findOne').resolves({
         id: 1,
         username: 'name',
         role: 'role',
         email: 'teste@teste.com',
         password: passwordEncrypt
-      } as User);
+      } as Users);
 
       chaiHttpResponse = await chai.request(app).post('/login').send(userLogin);
 
@@ -43,13 +43,13 @@ describe('/login', () => {
       expect(chaiHttpResponse.body.message).to.be.eq('All fields must be filled')
     })
     it('caso a senha ou email esteja incorreto deve retornar um erro com status 401 Unauthorized', async () => {
-      (User.findOne as sinon.SinonStub).restore();
+      (Users.findOne as sinon.SinonStub).restore();
       const request = {
         email: 'teste@teste.com',
         password: 'password'
       };
 
-      sinon.stub(User, 'findOne').resolves(null)
+      sinon.stub(Users, 'findOne').resolves(null)
 
       chaiHttpResponse = await chai.request(app).post('/login').send(request);
       expect(chaiHttpResponse.status).to.be.eq(401);

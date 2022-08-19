@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { compare } from 'bcryptjs';
 import 'dotenv/config';
 import Users from '../database/models/UserModel';
@@ -25,5 +25,16 @@ export default class LoginService {
         algorithm: 'HS256' },
     );
     return token;
+  };
+
+  public validate = async (token:string) => {
+    try {
+      const { dataValues } = verify(token, process.env.JWT_SECRET as string) as any;
+      return dataValues.role;
+    } catch (err) {
+      const error = new Error('Expired or invalid token');
+      error.name = 'UnauthorizedError';
+      throw error;
+    }
   };
 }

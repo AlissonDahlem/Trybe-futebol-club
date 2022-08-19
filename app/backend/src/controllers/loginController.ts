@@ -20,4 +20,18 @@ export default class LoginController {
     const token = await this._loginService.login(email, password);
     res.status(200).json({ token });
   };
+
+  public validate:RequestHandler = async (req, res): Promise<void> => {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      const error = new Error('Token not found');
+      error.name = 'Unauthorized';
+      throw error;
+    }
+
+    const role = await this._loginService.validate(authorization);
+
+    res.status(200).json({ role });
+  };
 }
