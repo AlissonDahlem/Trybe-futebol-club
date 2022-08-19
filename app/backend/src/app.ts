@@ -1,19 +1,16 @@
 import * as express from 'express';
-import LoginController from './controllers/loginController';
+import 'express-async-errors';
 import errorMiddleware from './middlewares/errorMiddleware';
+import authRouter from './routes/authRouter';
 
 class App {
   public app: express.Express;
-  private _loginController = new LoginController();
-
   constructor() {
     this.app = express();
     this.config();
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.post('/login', this._loginController.login);
-    this.app.use(errorMiddleware);
   }
 
   private config():void {
@@ -25,6 +22,8 @@ class App {
     };
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use('/login', authRouter);
+    this.app.use(errorMiddleware);
   }
 
   public start(PORT: string | number):void {
