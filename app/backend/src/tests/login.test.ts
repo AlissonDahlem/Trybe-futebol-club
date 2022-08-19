@@ -12,14 +12,14 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Login', () => {
+describe('/login', () => {
   let chaiHttpResponse: Response;
   const userLogin = {
     email: 'teste@teste.com',
     password: 'password'
   }
   describe('valida resposta ao efetuar login', () => {
-    beforeEach(() => {
+    after(() => {
       (User.findOne as sinon.SinonStub).restore();
     })
     it('deve responder com um token caso o login seja efetuado com sucesso', async () => {
@@ -63,8 +63,4 @@ describe('Login', () => {
 
   //   expect(...)
   // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
-  });
 });
