@@ -36,6 +36,25 @@ describe('/login', () => {
 
       expect(chaiHttpResponse.body).to.have.key('token').and.not.to.be.an('undefined' || 'null')
     })
+    it('caso o campo email ou password não seja preenchido deve retornar um erro com status 400', async () => {
+      const request = { }
+      chaiHttpResponse = await chai.request(app).post('/login').send(request);
+      expect(chaiHttpResponse.status).to.be.eq(400)
+      expect(chaiHttpResponse.body.message).to.be.eq('All fields must be filled')
+    })
+    it('caso a senha ou email esteja incorreto deve retornar um erro com status 401 Unauthorized', async () => {
+      (User.findOne as sinon.SinonStub).restore();
+      const request = {
+        email: 'teste@teste.com',
+        password: 'password'
+      };
+
+      sinon.stub(User, 'findOne').resolves(null)
+
+      chaiHttpResponse = await chai.request(app).post('/login').send(request);
+      expect(chaiHttpResponse.status).to.be.eq(401);
+      expect(chaiHttpResponse.body.message).to.be.eq('Incorrect email or password')
+    })
   })
 
   /**
