@@ -12,8 +12,8 @@ export default class LoginService {
     const comparePassword = await compare(password, user.password);
 
     if (!user || !comparePassword) {
-      const error = new Error('Unauthorized');
-      error.message = 'Incorrect email or password';
+      const error = new Error('Incorrect email or password');
+      error.name = 'Unauthorized';
       throw error;
     }
 
