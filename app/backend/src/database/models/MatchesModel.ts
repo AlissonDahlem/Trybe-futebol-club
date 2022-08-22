@@ -70,3 +70,5 @@ Teams.hasMany(Matches, {
   sourceKey: 'id',
   as: 'awayMatches',
 });
+
+export default Matches;
