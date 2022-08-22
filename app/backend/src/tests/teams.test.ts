@@ -34,7 +34,7 @@ describe('/teams', () => {
       chaiHttpResponse = await chai.request(app).get('/teams')
 
       expect(chaiHttpResponse.status).to.be.eq(200);
-      expect(chaiHttpResponse.body).to.be.eq(teams)
+      expect(chaiHttpResponse.body.teams).to.be.deep.eq(teams)
     })
   })
 })
