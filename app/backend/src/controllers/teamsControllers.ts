@@ -10,6 +10,6 @@ export default class TeamController {
 
   public listAll:RequestHandler = async (_req, res): Promise<void> => {
     const teams = await this._teamService.listAll();
-    res.status(200).json({ teams });
+    res.status(200).json(teams);
   };
 }
