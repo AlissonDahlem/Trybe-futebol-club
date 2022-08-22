@@ -19,9 +19,9 @@ describe('/login', () => {
     password: 'password'
   }
   describe('valida resposta ao efetuar login', () => {
-    after(() => {
-      (Users.findOne as sinon.SinonStub).restore();
-    })
+    // after(() => {
+    //   (Users.findOne as sinon.SinonStub).restore();
+    // })
     it('deve responder com um token caso o login seja efetuado com sucesso', async () => {
       const passwordEncrypt = await hash('password', 8);
       sinon.stub(Users, 'findOne').resolves({

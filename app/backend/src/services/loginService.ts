@@ -29,11 +29,11 @@ export default class LoginService {
 
   public validate = async (token:string) => {
     try {
-      const { dataValues } = verify(token, process.env.JWT_SECRET as string) as any;
+      const { dataValues } = await verify(token, process.env.JWT_SECRET as string) as any;
       return dataValues.role;
     } catch (err) {
       const error = new Error('Expired or invalid token');
-      error.name = 'UnauthorizedError';
+      error.name = 'Unauthorized';
       throw error;
     }
   };
