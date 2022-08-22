@@ -12,20 +12,22 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Server error 500', () => {
+describe('Server', () => {
   let chaiHttpResponse: Response
   const userLogin = {
     email: 'teste@teste.com',
     password: 'password'
   }
-  it('deve retornar erro status 500 com mensagem do erro', async () => {
-    (Users.findOne as sinon.SinonStub).restore();
-    const passwordEncrypt = await hash('password', 8);
-    sinon.stub(Users, 'findOne').throws()
-
-    chaiHttpResponse = await chai.request(app).post('/login').send(userLogin);
-
-    expect(chaiHttpResponse.status).to.be.eq(500)
-    expect(chaiHttpResponse.body).to.have.key('message')
+  describe('Error status 500', () => {
+    it('deve retornar erro status 500 com mensagem do erro', async () => {
+      (Users.findOne as sinon.SinonStub).restore();
+      const passwordEncrypt = await hash('password', 8);
+      sinon.stub(Users, 'findOne').throws()
+  
+      chaiHttpResponse = await chai.request(app).post('/login').send(userLogin);
+  
+      expect(chaiHttpResponse.status).to.be.eq(500)
+      expect(chaiHttpResponse.body).to.have.key('message')
+    })
   })
 })
