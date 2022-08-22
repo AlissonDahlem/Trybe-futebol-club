@@ -28,4 +28,4 @@ describe('Server error 500', () => {
     expect(chaiHttpResponse.status).to.be.eq(500)
     expect(chaiHttpResponse.body).to.have.key('message')
   })
-})´
+})

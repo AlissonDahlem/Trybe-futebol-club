@@ -38,5 +38,4 @@ describe('/login/validate', () => {
       expect(chaiHttpResponse.body.role).to.be.eq('user')
     })
   })
-
 })
