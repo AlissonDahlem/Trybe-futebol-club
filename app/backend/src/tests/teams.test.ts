@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('/teams', () => {
+describe('teams', () => {
   let chaiHttpResponse: Response;
 
   const teams = [
@@ -27,14 +27,33 @@ describe('/teams', () => {
       "teamName": "Botafogo"
     },
   ];
-  describe('valida respostas da rota', () => {
+  describe('valida respostas da rota /teams', () => {
     it('deve retornar todos os times corretamente no metodo GET /teams', async () => {
       sinon.stub(Teams, 'findAll').resolves(teams as Teams[]);
 
       chaiHttpResponse = await chai.request(app).get('/teams')
 
       expect(chaiHttpResponse.status).to.be.eq(200);
-      expect(chaiHttpResponse.body.teams).to.be.deep.eq(teams)
+      expect(chaiHttpResponse.body).to.be.deep.eq(teams)
+    })
+  })
+  describe('valida respostas da rota /teams/id', () => {
+    it('deve retornar o time de acordo com a primary key passada e um status 200', async () => {
+      sinon.stub(Teams, 'findByPk').resolves(teams[0] as Teams);
+
+      chaiHttpResponse = await chai.request(app).get('/teams/1');
+
+      expect(chaiHttpResponse.status).to.be.eq(200);
+      expect(chaiHttpResponse.body).to.be.deep.eq(teams[0])
+    })
+    it('deve retornar status 404 caso o id passado não exista', async () => {
+      (Teams.findByPk as sinon.SinonStub).restore();
+      sinon.stub(Teams, 'findByPk').resolves(null);
+
+      chaiHttpResponse = await chai.request(app).get('/teams/65498546');
+
+      expect(chaiHttpResponse.status).to.be.eq(404);
+      expect(chaiHttpResponse.body.message).to.be.eq('Id not found')
     })
   })
 })

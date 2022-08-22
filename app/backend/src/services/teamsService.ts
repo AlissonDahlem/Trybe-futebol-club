@@ -9,7 +9,7 @@ export default class TeamService {
   public listOne = async (id: string) => {
     const team = await Teams.findByPk(id);
     if (team === null) {
-      const error = new Error('Id not Found');
+      const error = new Error('Id not found');
       error.name = 'notFound';
       throw error;
     }
