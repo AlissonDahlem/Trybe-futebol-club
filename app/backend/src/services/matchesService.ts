@@ -22,9 +22,7 @@ export default class MatchesService {
 
   public matchesInProgress = async (inProgress: number) => {
     const matches = await Matches.findAll({
-      where: {
-        inProgress,
-      },
+      where: { inProgress },
       include: [
         {
           model: Teams,
@@ -59,5 +57,9 @@ export default class MatchesService {
     });
 
     return match;
+  };
+
+  public finishMatch = async (id: string) => {
+    await Matches.update({ inProgress: false }, { where: { id } });
   };
 }

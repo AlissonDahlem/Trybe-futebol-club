@@ -20,9 +20,9 @@ export default class MatchesController {
   public matchesInProgress:RequestHandler = async (req, res, next): Promise<void> => {
     const { inProgress } = req.query;
     if (!inProgress) return next();
-    const inProgressFilter = inProgress ? 1 : 0;
+    const inProgressFilter = inProgress === 'true' ? 1 : 0;
     const matches = await this._matchesService.matchesInProgress(inProgressFilter);
-    res.status(200).json({ inProgressFilter, matches });
+    res.status(200).json(matches);
   };
 
   public createMatchInProgress: RequestHandler = async (req, res): Promise<void> => {
@@ -41,5 +41,12 @@ export default class MatchesController {
       awayTeamGoals,
     );
     res.status(201).json(match);
+  };
+
+  public finishMatch: RequestHandler = async (req, res): Promise<void> => {
+    const { authorization: token } = req.headers as { authorization: string };
+    await this._loginService.validate(token);
+    await this._matchesService.finishMatch(req.params.id);
+    res.status(200).json({ message: 'Finished' });
   };
 }
