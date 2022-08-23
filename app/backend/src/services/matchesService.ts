@@ -40,4 +40,24 @@ export default class MatchesService {
     });
     return matches;
   };
+
+  public createMatchInProgress = async (
+    homeTeam: number,
+    awayTeam: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ) => {
+    const checkHomeTeam = await Teams.findByPk(homeTeam);
+    const checkAwayTeam = await Teams.findByPk(awayTeam);
+    if (!checkAwayTeam || !checkHomeTeam) {
+      const error = new Error('There is no team with such id!');
+      error.name = 'notFound';
+      throw error;
+    }
+    const match = await Matches.create({
+      homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true,
+    });
+
+    return match;
+  };
 }
