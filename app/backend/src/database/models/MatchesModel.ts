@@ -14,9 +14,8 @@ class Matches extends Model {
 Matches.init({
   id: {
     type: INTEGER,
-    allowNull: false,
-    primaryKey: true,
     autoIncrement: true,
+    primaryKey: true,
   },
   homeTeam: {
     type: INTEGER,
@@ -32,6 +31,7 @@ Matches.init({
     type: INTEGER,
     allowNull: false,
     field: 'away_team',
+    onDelete: 'CASCADE',
   },
   awayTeamGoals: {
     type: INTEGER,
