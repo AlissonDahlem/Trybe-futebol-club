@@ -60,6 +60,12 @@ export default class MatchesService {
   };
 
   public finishMatch = async (id: string) => {
+    const checkIfExist = await Matches.findByPk(id);
+    if (!checkIfExist) {
+      const error = new Error('This match doesn\'t exist');
+      error.name = 'notFound';
+      throw error;
+    }
     await Matches.update({ inProgress: false }, { where: { id } });
   };
 }
