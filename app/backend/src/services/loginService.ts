@@ -32,7 +32,7 @@ export default class LoginService {
       const { dataValues } = await verify(token, process.env.JWT_SECRET as string) as any;
       return dataValues.role;
     } catch (err) {
-      const error = new Error('Expired or invalid token');
+      const error = new Error('Token must be a valid token');
       error.name = 'Unauthorized';
       throw error;
     }
