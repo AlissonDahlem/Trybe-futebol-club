@@ -68,4 +68,14 @@ export default class MatchesService {
     }
     await Matches.update({ inProgress: false }, { where: { id } });
   };
+
+  public updateMatch = async (id: string, homeTeamGoals: string, awayTeamGoals: string) => {
+    const checkIfExist = await Matches.findByPk(id);
+    if (!checkIfExist) {
+      const error = new Error('This match doesn\'t exist');
+      error.name = 'notFound';
+      throw error;
+    }
+    await Matches.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+  };
 }

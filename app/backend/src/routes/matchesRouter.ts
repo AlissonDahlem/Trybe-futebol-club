@@ -8,5 +8,6 @@ router.get('/', (req, res, next) => matchesController.matchesInProgress(req, res
 router.get('/', (req, res, next) => matchesController.listAll(req, res, next));
 router.post('/', (req, res, next) => matchesController.createMatchInProgress(req, res, next));
 router.patch('/:id/finish', (req, res, next) => matchesController.finishMatch(req, res, next));
+router.patch('/:id', (req, res, next) => matchesController.updateMatch(req, res, next));
 
 export default router;
