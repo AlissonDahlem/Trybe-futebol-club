@@ -1,5 +1,6 @@
 import Teams from '../database/models/TeamModel';
 import Matches from '../database/models/MatchesModel';
+import IMatches from '../interfaces/IMatches';
 
 export default class MatchesService {
   public listAll = async () => {
@@ -36,7 +37,7 @@ export default class MatchesService {
         },
       ],
     });
-    return matches;
+    return matches as IMatches[];
   };
 
   public createMatchInProgress = async (

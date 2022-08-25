@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import MatchesService from '../services/matchesService';
 import LoginService from '../services/loginService';
+import Matches from '../database/models/MatchesModel';
 
 export default class MatchesController {
   private _matchesService: MatchesService;
@@ -12,7 +13,7 @@ export default class MatchesController {
   }
 
   public listAll:RequestHandler = async (_req, res): Promise<void> => {
-    const matches = await this._matchesService.listAll();
+    const matches: Matches[] = await this._matchesService.listAll();
 
     res.status(200).json(matches);
   };
