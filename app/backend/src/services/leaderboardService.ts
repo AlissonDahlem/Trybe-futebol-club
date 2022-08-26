@@ -95,7 +95,11 @@ export default class LeaderboardService {
     const leaderboardAtt = this.countVictoriesAndLooses(leaderboardWithTotalGames, matches);
     const leaderboardEfficiency = this.calculateEfficiency(leaderboardAtt);
     const leaderboardComplete = this.calculateGoalsBalance(leaderboardEfficiency);
-    leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
+    leaderboard.sort((a, b) => b.totalPoints - a.totalPoints
+      || b.totalVictories - a.totalVictories
+      || b.goalsBalance - a.goalsBalance
+      || b.goalsFavor - a.goalsFavor
+      || b.goalsOwn - a.goalsOwn);
     return leaderboardComplete;
   };
 }
